@@ -6,10 +6,10 @@
 --    by ZLovesPancakes
 --    2011-12-04    13:26:40
 --------------------------------------------------------------------------------
-require "gems.emerald"
-require "gems.ruby"
-require "gems.sapphire"
-print( minetest.env:path_userdata() .. "usermods" )
+--require "gems.emerald"
+--require "gems.ruby"
+--require "gems.sapphire"
+--print( minetest.env:path_userdata() .. "usermods" )
 ---- Create gems on chunk generation -------------------------------------------
 -- celeron55 said:
 -- "It is somewhat doable, but not very fancily. Off the top of my head without
@@ -20,9 +20,12 @@ local reggems = {
 	gems.emerald.orename, gems.ruby.orename, gems.sapphire.orename
 }
 
+-- pun intended
+local rarity = 10
+
 local gemstones_gen = function( minp, maxp )
 	for c, gemname in ipairs(reggems) do
-		local amount = math.random( 0, 20 )
+		local amount = math.random( 0, rarity )
 		for a = 0, amount do
 			local pos = {
 				x = math.random( minp.x, maxp.x ),

@@ -1,8 +1,9 @@
 --------------------------------------------------------------------------------
 --    Ruby Gemstone
+--    Faster, but much less durable than steel
 --------------------------------------------------------------------------------
-module( ..., package.seeall )
-orename = "gemstones:ruby_stone"
+--module( ..., package.seeall )
+--orename = "gemstones:ruby_stone"
 
 ---- Ore Block -----------------------------------------------------------------
 minetest.register_node( "gemstones:ruby_stone", {
@@ -39,7 +40,7 @@ minetest.register_tool( "gemstones:ruby_pick", {
 	dt_crackiness = -2,
 	dt_crumbliness = 3,
 	dt_cuttability = 3,
-	basedurability = 200,
+	basedurability = 180,
 	dd_weight = 0,
 	dd_crackiness = 0,
 	dd_crumbliness = 0,
@@ -54,7 +55,7 @@ minetest.register_tool( "gemstones:ruby_shovel", {
 	dt_crackiness = 3,
 	dt_crumbliness = -2,
 	dt_cuttability = 3,
-	basedurability = 200,
+	basedurability = 180,
 	dd_weight = 0,
 	dd_crackiness = 0,
 	dd_crumbliness = 0,
@@ -69,7 +70,7 @@ minetest.register_tool( "gemstones:ruby_axe", {
 	dt_crackiness = 3,
 	dt_crumbliness = 3,
 	dt_cuttability = -3,
-	basedurability = 200,
+	basedurability = 180,
 	dd_weight = 0,
 	dd_crackiness = 0,
 	dd_crumbliness = 0,
@@ -84,7 +85,7 @@ minetest.register_tool( "gemstones:ruby_sword", {
 	dt_crackiness = 2,
 	dt_crumbliness = 1,
 	dt_cuttability = -1,
-	basedurability = 200,
+	basedurability = 180,
 	dd_weight = 0,
 	dd_crackiness = 0,
 	dd_crumbliness = 0,
@@ -144,4 +145,4 @@ minetest.register_craft( {
 		{ 'node "gemstones:ruby_block"' },
 	}
 })
-print( "Ruby" )
+---- End Ruby ------------------------------------------------------------------

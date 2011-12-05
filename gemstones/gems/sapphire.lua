@@ -1,8 +1,9 @@
 --------------------------------------------------------------------------------
 --    Sapphire Gemstone
+--    Almost wood slow, but almost mese-like durability
 --------------------------------------------------------------------------------
-module( ..., package.seeall )
-orename = "gemstones:sapphire_stone"
+--module( ..., package.seeall )
+--orename = "gemstones:sapphire_stone"
 
 ---- Ore Block -----------------------------------------------------------------
 minetest.register_node( "gemstones:sapphire_stone", {
@@ -34,7 +35,7 @@ minetest.register_node( "gemstones:sapphire_block", {
 ---- Pick ----------------------------------------------------------------------
 minetest.register_tool( "gemstones:sapphire_pick", {
 	image = "gemstones_sapphire_pick.png",
-	basetime = 1.0,
+	basetime = 1.5,
 	dt_weight = 0,
 	dt_crackiness = -0.5,
 	dt_crumbliness = 4,
@@ -49,11 +50,11 @@ minetest.register_tool( "gemstones:sapphire_pick", {
 ---- Shovel --------------------------------------------------------------------
 minetest.register_tool( "gemstones:sapphire_shovel", {
 	image = "gemstones_sapphire_shovel.png",
-	basetime = 1.0,
+	basetime = 1.5,
 	dt_weight = 0.5,
 	dt_crackiness = 4,
 	dt_crumbliness = -1,
-	dt_cuttability = 4,
+	dt_cuttability = 3,
 	basedurability = 1000,
 	dd_weight = 0,
 	dd_crackiness = 0,
@@ -64,9 +65,9 @@ minetest.register_tool( "gemstones:sapphire_shovel", {
 ---- Axe -----------------------------------------------------------------------
 minetest.register_tool( "gemstones:sapphire_axe", {
 	image = "gemstones_sapphire_axe.png",
-	basetime = 1.0,
+	basetime = 1.5,
 	dt_weight = 0.5,
-	dt_crackiness = 4,
+	dt_crackiness = 3,
 	dt_crumbliness = 4,
 	dt_cuttability = -2,
 	basedurability = 1000,
@@ -79,7 +80,7 @@ minetest.register_tool( "gemstones:sapphire_axe", {
 ---- Sword ---------------------------------------------------------------------
 minetest.register_tool( "gemstones:sapphire_sword", {
 	image = "gemstones_sapphire_sword.png",
-	basetime = 2.0,
+	basetime = 2.5,
 	dt_weight = 2,
 	dt_crackiness = 2,
 	dt_crumbliness = 1,
@@ -144,4 +145,4 @@ minetest.register_craft( {
 		{ 'node "gemstones:sapphire_block"' },
 	}
 })
-print( "Sapphire" )
+---- End Sapphire --------------------------------------------------------------
