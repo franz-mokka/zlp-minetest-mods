@@ -612,7 +612,7 @@ local reggems = {
 }
 
 -- pun intended
-local rarity = 10
+local rarity = 5
 
 local gemstones_gen = function( minp, maxp )
 	for c, gemname in ipairs(reggems) do
