@@ -2,8 +2,8 @@
 --    Amethyst Gemstone
 --    Less durable but slightly faster than steel.
 --------------------------------------------------------------------------------
---module( ..., package.seeall )
---orename = "gemstones:amethyst_stone"
+
+table.insert( reggems, "gemstones:amethyst_stone" )
 
 ---- Ore Block -----------------------------------------------------------------
 minetest.register_node( "gemstones:amethyst_stone", {

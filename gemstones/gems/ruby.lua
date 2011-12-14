@@ -2,8 +2,8 @@
 --    Ruby Gemstone
 --    Faster, but much less durable than steel
 --------------------------------------------------------------------------------
---module( ..., package.seeall )
---orename = "gemstones:ruby_stone"
+
+table.insert( reggems, "gemstones:ruby_stone" )
 
 ---- Ore Block -----------------------------------------------------------------
 minetest.register_node( "gemstones:ruby_stone", {

@@ -2,8 +2,8 @@
 --    Emerald Gemstone
 --    Just a bit less durable than steel
 --------------------------------------------------------------------------------
---module( ..., package.seeall )
---orename = "gemstones:emerald_stone"
+
+table.insert( reggems, "gemstones:emerald_stone" )
 
 ---- Ore Block -----------------------------------------------------------------
 minetest.register_node( "gemstones:emerald_stone", {

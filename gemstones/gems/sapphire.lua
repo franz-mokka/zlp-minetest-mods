@@ -2,8 +2,8 @@
 --    Sapphire Gemstone
 --    Almost wood slow, but almost mese-like durability
 --------------------------------------------------------------------------------
---module( ..., package.seeall )
---orename = "gemstones:sapphire_stone"
+
+table.insert( reggems, "gemstones:sapphire_stone" )
 
 ---- Ore Block -----------------------------------------------------------------
 minetest.register_node( "gemstones:sapphire_stone", {

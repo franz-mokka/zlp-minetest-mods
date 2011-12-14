@@ -6,19 +6,19 @@
 --    by ZLovesPancakes
 --    2011-12-04    13:26:40
 --------------------------------------------------------------------------------
---require "gems.emerald"
---require "gems.ruby"
---require "gems.sapphire"
+local gempath = minetest.get_modpath( "gemstones" ) .. "/gems/"
+
+reggems = {}
+
+dofile( gempath .. "emerald.lua" )
+dofile( gempath .. "ruby.lua" )
+dofile( gempath .. "sapphire.lua" )
 --print( minetest.env:path_userdata() .. "usermods" )
 ---- Create gems on chunk generation -------------------------------------------
 -- celeron55 said:
 -- "It is somewhat doable, but not very fancily. Off the top of my head without
 -- any testing:"
 -- + My fixes
-
-local reggems = {
-	gems.emerald.orename, gems.ruby.orename, gems.sapphire.orename
-}
 
 -- pun intended
 local rarity = 5
