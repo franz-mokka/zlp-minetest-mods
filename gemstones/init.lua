@@ -5,7 +5,7 @@
 --    "solid" blocks can be crafted from the gems.
 --
 --    (c) 2011 Fernando Zapata
---    Code licensed under GNU GPLv3
+--    Code now licensed under GNU GPLv2
 --    Content licensed under CC BY-SA 3.0
 --
 --    2011-12-04    13:26:40
