@@ -11,24 +11,31 @@
 --    2011-12-04    13:26:40
 --------------------------------------------------------------------------------
 
+-- Name of the mod --
+gemsmodn = "gemstones"
+
 -- List containing the names and quantity of the ores --
 minerallist = {}
 
+--local register_multitool = function( modname, basename, craftname, )
+
+--end
+
 ---- Big, bad function to declare gems -----------------------------------------
-register_gem = function( gemtype, rarity, basetime, durability, toolrules )
+register_gem = function( modname, gemtype, rarity, basetime, durability, toolrules )
 
 	-- Ores --
-	mineralname = "gemstones:mineral_" .. gemtype
-	mineraltex  = "default_stone.png^gemstones_mineral_" .. gemtype .. ".png"
+	mineralname = modname .. ":mineral_" .. gemtype
+	mineraltex  = "default_stone.png^" .. modname .. "_mineral_" .. gemtype .. ".png"
 
 	-- Gems/lumps --
-	gemname     = "gemstones:gem_" .. gemtype
-	gemtex      = "gemstones_gem_" .. gemtype .. ".png"
+	gemname     = modname .. ":gem_" .. gemtype
+	gemtex      = modname .. "_gem_" .. gemtype .. ".png"
 	craftname   = gemname
 
 	-- Solid block --
-	blockname   = "gemstones:block_" .. gemtype
-	blocktex    = "gemstones_block_" .. gemtype .. ".png"
+	blockname   = modname .. ":block_" .. gemtype
+	blocktex    = modname .. "_block_" .. gemtype .. ".png"
 
 	table.insert( minerallist, { mineralname, rarity } )
 
@@ -39,26 +46,27 @@ register_gem = function( gemtype, rarity, basetime, durability, toolrules )
 
 	-- Mineral block --
 	minetest.register_node( mineralname, {
-		tile_images           = { mineraltex },
-		inventory_image       = minetest.inventorycube( mineraltex ),
-		is_ground_content     = true,
-		material              = minetest.digprop_stonelike(1.0),
-		drop                  = craftname .. ' 1',
+		description		= 'Stone with ' .. gemtype,
+		tile_images		= { mineraltex },
+		is_ground_content	= true,
+		material		= minetest.digprop_stonelike(1.0),
+		groups			= { cracky=3 },
+		drop			= craftname .. ' 1',
 
 	} )
 
 	-- Solid block --
 	minetest.register_node( blockname, {
-		--drawtype              = "glasslike",
-		tile_images           = { blocktex },
-		inventory_image       = blocktex,
-		--alpha                 = 200,
-		is_ground_content     = true,
-		material              = minetest.digprop_glasslike(3.0),
+		description		= gemtype .. ' block',
+		--drawtype		= "glasslike",
+		tile_images		= { blocktex },
+		--alpha			= 200,
+		is_ground_content	= true,
+		groups			= { cracky=2 }
 	} )
 
-	-- Tools, with "add_tool" by MarkTraceur
-	register_tool_type("gemstones", gemtype, craftname, basetime, durability, toolrules)
+	-- Tools, inspired by "add_tool" by MarkTraceur
+	--register_multitool( modname, gemtype, craftname, basetime, durability, toolrules )
 
 	-- Crafting blocks --
 	minetest.register_craft( {
@@ -73,7 +81,7 @@ register_gem = function( gemtype, rarity, basetime, durability, toolrules )
 	minetest.register_craft( {
 		output                = craftname .. ' 9',
 		recipe = {
-			                { blockname .. '"' },
+			                { blockname },
 		},
 	} )
 end
@@ -118,23 +126,23 @@ minetest.register_on_generated( generate_gem )
 
 ---- Amethyst ----
 -- Less durable but slightly faster than steel.
-register_gem( "amethyst", 5, 0.9, 250,  { sword_time = 1 } )
+register_gem( gemsmodn, "amethyst",  5, 0.9, 250,  { sword_time = 1 } )
 
 ---- Cubic Zirconia ----
 -- Almost wood slow, but almost mese-like durability
-register_gem( "czirconia", 5, 1.6, 1000, { sword_time = 1 } )
+register_gem( gemsmodn, "czirconia", 5, 1.6, 1000, { sword_time = 1 } )
 
 ---- Emerald ----
 -- Just a bit less durable than steel
-register_gem( "emerald",  5, 1.0, 300,  { sword_time = 1 } )
+register_gem( gemsmodn, "emerald",   5, 1.0, 300,  { sword_time = 1 } )
 
 ---- Ruby ----
 -- Faster, but much less durable than steel
-register_gem( "ruby",     5, 0.7, 180,  { sword_time = 1 } )
+register_gem( gemsmodn, "ruby",      5, 0.7, 180,  { sword_time = 1 } )
 
 ---- Sapphire ----
 -- Slow, but more durable than steel
-register_gem( "sapphire", 5, 1.2, 500, { sword_time = 1 } )
+register_gem( gemsmodn, "sapphire",  5, 1.2, 500,  { sword_time = 1 } )
 
 ---- Was loaded? ---------------------------------------------------------------
 -- Just to be sure, may remove if you like.

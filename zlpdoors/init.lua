@@ -1,13 +1,14 @@
 --------------------------------------------------------------------------------
---    Doors
+--	Doors
 --------------------------------------------------------------------------------
---    This mod adds 'minecraftlike' doors to the game
+--	This mod adds 'minecraftlike' doors to the game.
+--	Now included with vainilla Minetest.
 --
---    (c) 2011 Fernando Zapata
---    Code licensed under GNU GPLv3
---    Content licensed under CC BY-SA 3.0
+--	(c) 2011-2012 Fernando Zapata
+--	Code now licensed under GNU GPLv2
+--	Content licensed under CC BY-SA 3.0
 --
---    2012-01-08    11:03:57
+--	2012-01-08	11:03:57
 --------------------------------------------------------------------------------
 
 local WALLMX = 3
@@ -16,6 +17,9 @@ local WALLPX = 2
 local WALLPZ = 4
 
 --------------------------------------------------------------------------------
+
+
+
 
 minetest.register_node( 'zlpdoors:door', {
 	description         = 'Door',
