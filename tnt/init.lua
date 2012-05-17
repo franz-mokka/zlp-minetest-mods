@@ -100,6 +100,7 @@ minetest.register_craft({
 })
 
 minetest.register_node('tnt:tnt', {
+	description	= 'TNT',
 	tile_images	= {	'tnt_top.png', 'tnt_bottom.png',
 				'tnt_side.png', 'tnt_side.png',
 				'tnt_side.png', 'tnt_side.png'},
