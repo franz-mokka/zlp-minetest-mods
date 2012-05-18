@@ -1,10 +1,21 @@
 --------------------------------------------------------------------------------
---	Magic Teleporting Ball
---	(c)2012 Fernando Zapata (ZLovesPancakes, Franz.ZPT)
+--	Farwalk Orb
 --------------------------------------------------------------------------------
+--	Throw the orb to teleport to it's landing position.
+--
+--	(c)2012 Fernando Zapata (ZLovesPancakes, Franz.ZPT)
+--	Code licensed under GNU GPLv2
+--		http://www.gnu.org/licenses/gpl-2.0.html
+--	Content licensed under CC BY-SA 3.0
+--		http://creativecommons.org/licenses/by-sa/3.0/
+--------------------------------------------------------------------------------
+
+------------------------------------------------------ Global Variables --------
 
 local V = 18
 local G = 9
+
+------------------------------------------------------------ Definition --------
 
 local throw_orb = function( itemstack, user, pointed )
 
@@ -76,21 +87,25 @@ farorb_ent.on_step = function( self, dtime )
 
 end
 
+-------------------------------------------------------------- Register --------
+
 minetest.register_entity( 'farorb:farorb_ent', farorb_ent )
 
 minetest.register_craftitem( 'farorb:farorb', {
-	description = 'Farwalk Orb',
-	inventory_image = 'farorb_farorb.png',
-	on_use = throw_orb
+	description	= 'Farwalk Orb',
+	inventory_image	= 'farorb_farorb.png',
+	on_use		= throw_orb
 })
 
 minetest.register_craft({
-	output = 'farorb:farorb',
-	recipe = {
+	output		= 'farorb:farorb',
+	recipe		= {
 		{ '',              'default:glass', ''              },
 		{ 'default:glass', 'default:mese',  'default:glass' },
 		{ '',              'default:glass', ''              }
 	}
 })
 
------------------------------------------------------------ End of File --------
+print( ' ++ loaded : Farwalk Orb, by ZLovesPancakes' )
+
+--------------------------------------------------------------------------------

@@ -1,7 +1,14 @@
 --------------------------------------------------------------------------------
 --	TNT
+--------------------------------------------------------------------------------
+--	A simple TNT mod which damages both terrain and entities.
+--	Based on bcmpinc's pull request.
+--
 --	(c)2012 Fernando Zapata (ZLovesPancakes, Franz.ZPT)
---	Based on bcmpinc's pull request
+--	Code licensed under GNU GPLv2
+--		http://www.gnu.org/licenses/gpl-2.0.html
+--	Content licensed under CC BY-SA 3.0
+--		http://creativecommons.org/licenses/by-sa/3.0/
 --------------------------------------------------------------------------------
 
 local RANGE = 3
@@ -115,6 +122,6 @@ minetest.register_on_punchnode( function( pos, node )
 end)
 ----------------------------------------------------------------- Debug --------
 
-print( '++ loaded: TNT, fixed by ZLovesPancakes' )
+print( ' ++ loaded : TNT, fixed by ZLovesPancakes' )
 
 --------------------------------------------------------------------------------

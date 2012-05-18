@@ -5,8 +5,10 @@
 --	Now included with vainilla Minetest.
 --
 --	(c) 2011-2012 Fernando Zapata
---	Code now licensed under GNU GPLv2
+--	Code licensed under GNU GPLv2
+--		http://www.gnu.org/licenses/gpl-2.0.html
 --	Content licensed under CC BY-SA 3.0
+--		http://creativecommons.org/licenses/by-sa/3.0/
 --
 --	2012-01-08	11:03:57
 --------------------------------------------------------------------------------
@@ -16,10 +18,7 @@ local WALLMZ = 5
 local WALLPX = 2
 local WALLPZ = 4
 
---------------------------------------------------------------------------------
-
-
-
+-------------------------------------------------------- Register Nodes --------
 
 minetest.register_node( 'zlpdoors:door', {
 	description         = 'Door',
@@ -103,7 +102,7 @@ minetest.register_node( 'zlpdoors:door_b_o', {
 	drop                = 'zlpdoors:door',
 })
 
---------------------------------------------------------------------------------
+----------------------------------------------------------- Definitions --------
 
 local round = function( n )
 	if n >= 0 then
@@ -204,12 +203,12 @@ local on_door_digged = function( pos, node, digger )
 	end
 end
 
---------------------------------------------------------------------------------
+---------------------------------------------------- Register Functions --------
 
 minetest.register_on_placenode( on_door_placed )
 minetest.register_on_punchnode( on_door_punched )
 minetest.register_on_dignode( on_door_digged )
 
---------------------------------------------------------------------------------
+print( ' ++ loaded : Doors, by ZLovesPancakes' )
 
-print( ' ++ loaded : Doors by ZLovesPancakes' )
+--------------------------------------------------------------------------------

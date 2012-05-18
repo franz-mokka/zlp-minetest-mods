@@ -1,6 +1,13 @@
 --------------------------------------------------------------------------------
 --	Custom Commands
+--------------------------------------------------------------------------------
+--	Many custom commands, currently includes:
+--		/killme		Suicide
+--
 --	(c)2012 Fernando Zapata
+--	Code licensed under GNU GPLv2
+--		http://www.gnu.org/licenses/gpl-2.0.html
+--
 --	2012-05-12	01:03:30
 --------------------------------------------------------------------------------
 
@@ -12,5 +19,7 @@ minetest.register_chatcommand( 'killme', {
 		player:set_hp(0)
 	end
 })
+
+print( ' ++ loaded : Custom Commands, by ZLovesPancakes' )
 
 --------------------------------------------------------------------------------
