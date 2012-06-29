@@ -10,13 +10,13 @@
 --		http://creativecommons.org/licenses/by-sa/3.0/
 --------------------------------------------------------------------------------
 
------------------------------------------------------------- Definition --------
+------------------------------------------------------- Node Definition --------
 
 minetest.register_node( 'rope:rope', {
 
 	description		= 'Rope',
 	drawtype		= 'nodebox',
-	tiles			= { 'rope.png' },
+	tiles			= { 'rope_rope.png' },
 	paramtype		= 'light',
 	is_ground_content	= true,
 	walkable		= false,
@@ -84,8 +84,10 @@ minetest.register_node( 'rope:rope', {
 
 })
 
+------------------------------------------------------- Crafting Recipe --------
+
 minetest.register_craft({
-	output		= 'rope:rope',
+	output		= 'rope:rope 4',
 	recipe		= {
 		{ 'default:junglegrass' },
 		{ 'default:junglegrass' },
