@@ -153,7 +153,7 @@ minetest.register_craftitem( 'wheat:bread', {
 
 minetest.register_craft({
 	output		= 'wheat:hoe_wood',
-	recipe	= {	{ 'default:wood', 'default:wood', 'default:wood' },
+	recipe	= {	{ 'default:wood', 'default:wood' },
 			{ '', 'default:stick', '' },
 			{ '', 'default:stick', '' } },
 })
