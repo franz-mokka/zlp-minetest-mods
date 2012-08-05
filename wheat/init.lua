@@ -24,6 +24,7 @@ minetest.register_node( 'wheat:tall_grass', {
 	tiles			= { 'wheat_grass.png' },
 	drawtype		= 'plantlike',
 	paramtype		= 'light',
+	sunlight_propagates	= true,
 	walkable		= false,
 	buildable_to		= true,
 	selection_box	= {	type = 'fixed',
@@ -37,7 +38,8 @@ minetest.register_node( 'wheat:tall_grass', {
 
 minetest.register_node( 'wheat:seeds', {
 	description		= 'Seeds',
-	groups		= {	snappy = 3,
+	groups		= {	wheat = 1,
+				snappy = 3,
 				dig_immediate = 3,
 				flammable = 2 },
 	inventory_image		= 'wheat_seeds.png',
@@ -45,6 +47,7 @@ minetest.register_node( 'wheat:seeds', {
 	tiles			= { 'wheat_seeds_node.png' },
 	drawtype		= 'plantlike',
 	paramtype		= 'light',
+	sunlight_propagates	= true,
 	walkable		= false,
 	selection_box	= {	type = 'fixed',
 				fixed = { -3/8, -1/2, -3/8, 3/8, -3/8, 3/8 } },
@@ -59,22 +62,55 @@ minetest.register_node( 'wheat:seeds', {
 	end
 })
 
-minetest.register_node( 'wheat:wheat_node', {
-	description		= 'Wheat node',
-	groups		= {	snappy = 3,
+minetest.register_node( 'wheat:wheat_node_1', {
+	groups		= {	wheat = 1,
+				snappy = 3,
 				dig_immediate = 3,
 				flammable = 2 },
-	tiles			= { 'wheat_node.png' },
+	tiles			= { 'wheat_node_1.png' },
 	drawtype		= 'plantlike',
 	paramtype		= 'light',
+	sunlight_propagates	= true,
+	walkable		= false,
+	selection_box	= {	type = 'fixed',
+				fixed = { -3/8, -1/2, -3/8, 3/8, -1/8, 3/8 } },
+	drop			= 'wheat:seeds',
+	sounds			= default.node_sound_leaves_defaults(),
+})
+
+minetest.register_node( 'wheat:wheat_node_2', {
+	groups		= {	wheat = 2,
+				snappy = 3,
+				dig_immediate = 3,
+				flammable = 2 },
+	tiles			= { 'wheat_node_2.png' },
+	drawtype		= 'plantlike',
+	paramtype		= 'light',
+	sunlight_propagates	= true,
+	walkable		= false,
+	selection_box	= {	type = 'fixed',
+				fixed = { -3/8, -1/2, -3/8, 3/8, 1/4, 3/8 } },
+	drop			= 'wheat:seeds',
+	sounds			= default.node_sound_leaves_defaults(),
+})
+
+minetest.register_node( 'wheat:wheat_node_3', {
+	groups		= {	wheat = 3,
+				snappy = 3,
+				dig_immediate = 3,
+				flammable = 2 },
+	tiles			= { 'wheat_node_3.png' },
+	drawtype		= 'plantlike',
+	paramtype		= 'light',
+	sunlight_propagates	= true,
 	walkable		= false,
 	selection_box	= {	type = 'fixed',
 				fixed = { -3/8, -1/2, -3/8, 3/8, 1/2, 3/8 } },
 	drop		= {	max_items = 4,
 				items = {
 					{ items={'wheat:seeds'}, rarity=2 },
+					{ items={'wheat:seeds'}, rarity=3 },
 					{ items={'wheat:seeds'}, rarity=4 },
-					{ items={'wheat:seeds'}, rarity=6 },
 					{ items={'wheat:wheat'} } } },
 	sounds			= default.node_sound_leaves_defaults(),
 })
@@ -171,6 +207,13 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	type		= 'shapeless',
+	output		= 'wheat:dough',
+	recipe		= { 'wheat:flour', 'bottle:bottle_water' },
+	replacements	= { { 'bottle:bottle_water', 'bottle:bottle_empty' } }
+})
+
+minetest.register_craft({
 	type		= 'cooking',
 	output		= 'wheat:bread',
 	recipe		= 'wheat:dough',
@@ -179,16 +222,16 @@ minetest.register_craft({
 
 ------------------------------------------------------------------ ABMs --------
 
---[[minetest.register_abm({
-	nodenames	= { 'default:dirt_with_grass' },
-	neighbors	= { 'wheat:tall_grass' },
-	interval	= 300,
-	chance		= 8,
-	action		= function( p, n, aoc, aocw )
-		p.y = p.y + 1
-		minetest.env:set_node( p, { name='wheat:tall_grass' } )
-	end
-})]]
+--minetest.register_abm({
+--	nodenames	= { 'default:dirt_with_grass' },
+--	neighbors	= { 'wheat:tall_grass' },
+--	interval	= 300,
+--	chance		= 8,
+--	action		= function( p, n, aoc, aocw )
+--		p.y = p.y + 1
+--		minetest.env:set_node( p, { name='wheat:tall_grass' } )
+--	end
+--})
 
 minetest.register_abm({
 	nodenames	= { 'wheat:farmland' },
@@ -210,36 +253,18 @@ minetest.register_abm({
 })
 
 minetest.register_abm({
-	nodenames	= { 'wheat:seeds' },
+	nodenames	= { 'group:wheat' },
 	neighbors	= { 'wheat:farmland_damp' },
 	interval	= 120,
-	chance		= 3,
+	chance		= 4,
 	action		= function( p, n, aoc, aocw )
-		local l = minetest.env:get_node_light( p )
-		if l > 8 then
-			minetest.env:set_node( p, { name='wheat:wheat_node' } )
-		end
-	end
-})
-
-minetest.register_abm({
-	nodenames	= { 'wheat:wheat_node' },
-	neighbors	= { 'wheat:farmland_damp' },
-	interval	= 120,
-	chance		= 3,
-	action		= function( p, n, aoc, aocw )
-		local l = minetest.env:get_node_light( p )
-		if l > 8 then
-			local np = xyz( p.x,p.y,p.z )
-			for t=1,2 do
-				np.y = p.y + t
-				local nn = minetest.env:get_node( np ).name
-				if nn == 'air' then
-					minetest.env:set_node( np,
-						{ name='wheat:wheat_node' } )
-					break
-				end
-			end
+		if minetest.env:get_node_light( p ) < 9 then return end
+		if n.name == 'wheat:seeds' then
+			minetest.env:set_node( p, {name='wheat:wheat_node_1'} )
+		elseif n.name == 'wheat:wheat_node_1' then
+			minetest.env:set_node( p, {name='wheat:wheat_node_2'} )
+		elseif n.name == 'wheat:wheat_node_2' then
+			minetest.env:set_node( p, {name='wheat:wheat_node_3'} )
 		end
 	end
 })
