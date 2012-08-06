@@ -14,11 +14,31 @@
 
 local function xyz( i,j,k ) return {x=i,y=j,z=k} end
 
+local function unwheat( p, n, u )
+	p.y = p.y + 1
+	local nn = minetest.env:get_node( p ).name
+	local ng = minetest.get_item_group( nn, 'plant' )
+	if ng ~= 0 then minetest.env:remove_node( p ) end
+end
+
+local function till( i, u, p )
+	if p.type ~= 'node' then return end
+	local n = minetest.env:get_node( p.under )
+	if n.name == 'default:dirt' or n.name == 'default:dirt_with_grass' then
+		minetest.env:set_node( p.under, { name='wheat:farmland' } )
+		local def = ItemStack({name=n.name}):get_definition()
+		local tp = i:get_tool_capabilities()
+		local dp = minetest.get_dig_params(def.groups, tp)
+		i:add_wear(dp.wear)
+		return i
+	else return end
+end
+
 ---------------------------------------------------------------- Blocks --------
 
 minetest.register_node( 'wheat:tall_grass', {
-	description		= 'Tall grass',
 	groups		= {	snappy = 3,
+				plant = 1,
 				dig_immediate = 3,
 				flammable = 2 },
 	tiles			= { 'wheat_grass.png' },
@@ -39,6 +59,7 @@ minetest.register_node( 'wheat:tall_grass', {
 minetest.register_node( 'wheat:seeds', {
 	description		= 'Seeds',
 	groups		= {	wheat = 1,
+				plant = 1,
 				snappy = 3,
 				dig_immediate = 3,
 				flammable = 2 },
@@ -64,6 +85,7 @@ minetest.register_node( 'wheat:seeds', {
 
 minetest.register_node( 'wheat:wheat_node_1', {
 	groups		= {	wheat = 1,
+				plant = 1,
 				snappy = 3,
 				dig_immediate = 3,
 				flammable = 2 },
@@ -80,6 +102,7 @@ minetest.register_node( 'wheat:wheat_node_1', {
 
 minetest.register_node( 'wheat:wheat_node_2', {
 	groups		= {	wheat = 2,
+				plant = 1,
 				snappy = 3,
 				dig_immediate = 3,
 				flammable = 2 },
@@ -96,6 +119,7 @@ minetest.register_node( 'wheat:wheat_node_2', {
 
 minetest.register_node( 'wheat:wheat_node_3', {
 	groups		= {	wheat = 3,
+				plant = 1,
 				snappy = 3,
 				dig_immediate = 3,
 				flammable = 2 },
@@ -140,26 +164,39 @@ minetest.register_node( 'wheat:farmland_damp', {
 ----------------------------------------------------------------- Tools --------
 
 minetest.register_tool( 'wheat:hoe_wood', {
-	description		= "Wooden Hoe",
-	inventory_image		= "wheat_tool_woodhoe.png",
-	tool_capabilities	= {	max_drop_level=0,
-					groupcaps={
-					crumbly={
-						times={[1]=3.00, [2]=0.80, [3]=0.50},
-						uses=10,
-						maxlevel=1 } } },
-	on_use			= function( i, u, p )
-		if p.type ~= 'node' then return end
-		local n = minetest.env:get_node( p.under )
-		if n.name == 'default:dirt' or n.name == 'default:dirt_with_grass' then
-			minetest.env:set_node( p.under, { name='wheat:farmland' } )
-			local def = ItemStack({name=n.name}):get_definition()
-			local tp = i:get_tool_capabilities()
-			local dp = minetest.get_dig_params(def.groups, tp)
-			i:add_wear(dp.wear)
-			return i
-		else return end
-	end
+	description		= 'Wooden Hoe',
+	inventory_image		= 'wheat_tool_woodhoe.png',
+	tool_capabilities = {	max_drop_level=0,
+				groupcaps={
+				crumbly={
+					times={ [1]=3.00, [2]=0.80, [3]=0.50 },
+					uses=10,
+					maxlevel=1 } } },
+	on_use			= till
+})
+
+minetest.register_tool( 'wheat:hoe_stone', {
+	description		= 'Stone Hoe',
+	inventory_image		= 'wheat_tool_stonehoe.png',
+	tool_capabilities = {	max_drop_level=0,
+				groupcaps={
+				crumbly={
+					times={ [1]=1.50, [2]=0.50, [3]=0.30 },
+					uses=20,
+					maxlevel=1 } } },
+	on_use			= till
+})
+
+minetest.register_tool( 'wheat:hoe_steel', {
+	description		= 'Steel Hoe',
+	inventory_image		= 'wheat_tool_steelhoe.png',
+	tool_capabilities = {	max_drop_level=0,
+				groupcaps={
+				crumbly={
+					times={ [1]=1.50, [2]=0.70, [3]=0.60 },
+					uses=30,
+					maxlevel=2 } } },
+	on_use			= till
 })
 
 ----------------------------------------------------------------- Items --------
@@ -195,6 +232,20 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output		= 'wheat:hoe_stone',
+	recipe	= {	{ 'default:cobble', 'default:cobble' },
+			{ '', 'default:stick' },
+			{ '', 'default:stick' } },
+})
+
+minetest.register_craft({
+	output		= 'wheat:hoe_steel',
+	recipe	= {	{ 'default:steel_ingot', 'default:steel_ingot' },
+			{ '', 'default:stick' },
+			{ '', 'default:stick' } },
+})
+
+minetest.register_craft({
 	output		= 'wheat:flour',
 	recipe		= { { 'wheat:wheat' } },
 })
@@ -221,6 +272,8 @@ minetest.register_craft({
 })
 
 ------------------------------------------------------------------ ABMs --------
+
+minetest.register_on_dignode( unwheat )
 
 --minetest.register_abm({
 --	nodenames	= { 'default:dirt_with_grass' },
