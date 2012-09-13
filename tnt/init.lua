@@ -2,7 +2,7 @@
 --	TNT
 --------------------------------------------------------------------------------
 --	A simple TNT mod which damages both terrain and entities.
---	Based on bcmpinc's pull request.
+--	Barely based on bcmpinc's pull request.
 --
 --	(c)2012 Fernando Zapata (ZLovesPancakes, Franz.ZPT)
 --	Code licensed under GNU GPLv2
@@ -11,117 +11,142 @@
 --		http://creativecommons.org/licenses/by-sa/3.0/
 --------------------------------------------------------------------------------
 
-local RANGE = 3
-local DAMAGE = 16
+--------------------------------------------------------------- Globals --------
 
------------------------------------------------------------- Definition --------
+tnt = {}
 
-local tnt_ent = {
-	physical	= true,
-	collisionbox	= {-0.5,-0.5,-0.5, 0.5,0.5,0.5},
-	visual		= 'cube',
-	textures	= {	'tnt_top.png', 'tnt_bottom.png',
-				'tnt_side.png', 'tnt_side.png',
-				'tnt_side.png', 'tnt_side.png'},
-	timer		= 0,
-	health		= 1,
-	blinktimer	= 0,
-	blinkstatus	= true,
-}
+tnt.power = 3
 
-tnt_ent.on_activate = function( self, staticdata )
+------------------------------------------------------------- Functions --------
 
-	self.object:setvelocity({x=0, y=4, z=0})
-	self.object:setacceleration({x=0, y=-10, z=0})
-	self.object:settexturemod('^[brighten')
-
+function tnt.damage( a, b, p )
+	local i = 1 - dist3d( a, b ) / ( p * 2 )
+	local d = math.ceil( ( i * i + i ) * 8 * p + 1 )
+	return d
 end
 
-tnt_ent.on_step = function( self, dtime )
-
-	self.timer = self.timer + dtime
-	self.blinktimer = self.blinktimer + dtime
-	if self.timer>5 then
-		self.blinktimer = self.blinktimer + dtime
-		if self.timer>8 then
-			self.blinktimer = self.blinktimer + dtime
-			self.blinktimer = self.blinktimer + dtime
-		end
-	end
-	if self.blinktimer > 0.5 then
-		self.blinktimer = self.blinktimer - 0.5
-		if self.blinkstatus then
-			self.object:settexturemod('')
-		else
-			self.object:settexturemod('^[brighten')
-		end
-		self.blinkstatus = not self.blinkstatus
-	end
-	if self.timer > 10 then
-		-- explode
-		local pos = self.object:getpos()
-		pos = { x=math.floor(pos.x+0.5),
-			y=math.floor(pos.y+0.5),
-			z=math.floor(pos.z+0.5) }
-		local objs = minetest.env:get_objects_inside_radius(pos,
-			RANGE+1)
-		for k, obj in pairs(objs) do
-			obj:set_hp( obj:get_hp() - DAMAGE )
-		end
-		for x=-RANGE,RANGE do
-		for y=-RANGE,RANGE do
-		for z=-RANGE,RANGE do
-			if x*x+y*y+z*z <= RANGE * RANGE + RANGE then
-				local np={x=pos.x+x,y=pos.y+y,z=pos.z+z}
-				local n = minetest.env:get_node(np)
-				if n.name ~= 'air' then
-					minetest.env:remove_node(np)
-				end
+function tnt.explode( p, f )
+	for x= -f, f do for y= -f, f do for z= -f, f do
+		if ( x * x + y * y + z * z ) <= ( f * f + f ) then
+			local np = xyz( p.x+x, p.y+y, p.z+z )
+			if minetest.env:get_node( np ).name == 'tnt:tnt' then
+				tnt.lit( np )
+			elseif minetest.env:get_node( np ).name ~= 'air' then
+				--if math.random( 1,3 ) == 1 then
+				--	minetest.env:dig_node( np )
+				--else
+					minetest.env:dig_node( np )
+				--end
 			end
 		end
+	end end end
+	local os = minetest.env:get_objects_inside_radius( p, f * 2 + 1 )
+	for _, o in pairs( os ) do
+		local op = o:getpos()
+		local dd = dist3d( p, op )
+		local u = xyz( 0,0,0 )
+		local vm = 0
+		if dd > 0 then
+			u = xyz( (op.x-p.x)/dd, (op.y-p.y)/dd, (op.z-p.z)/dd )
+			vm = 18 * (1/dd)
 		end
-		end
-		self.object:remove()
+		o:setvelocity( xyz( u.x*vm, u.y*vm, u.z*vm ) )
+		o:set_hp( o:get_hp() - tnt.damage( p, op, f ) )
 	end
-
 end
 
-tnt_ent.on_punch = function( self, user )
-
-	user:get_inventory():add_item( 'main', 'tnt:tnt' )
-	self.object:remove()
-
+function tnt.lit( p, n )
+	--if n.name ~= 'tnt:tnt' then return end
+	minetest.env:remove_node( p )
+	minetest.env:add_entity( p, 'tnt:tnt_ent' )
 end
 
--------------------------------------------------------------- Register --------
+----------------------------------------------------------------- Nodes --------
 
-minetest.register_entity( 'tnt:tnt_ent', tnt_ent )
+minetest.register_node('tnt:tnt', {
+	description	= 'TNT',
+	groups	= {	snappy = 2,
+			choppy = 3,
+			oddly_breakable_by_hand = 2 },
+	tile_images	= { 'tnt_top.png', 'tnt_bottom.png', 'tnt_side.png' },
+	sounds		= default.node_sound_wood_defaults()
+})
+
+--------------------------------------------------------------- Recipes --------
 
 minetest.register_craft({
 	output		= 'tnt:tnt 4',
 	recipe		= {
-		{'default:wood'},
-		{'default:coal_lump'},
-		{'default:wood'}
+		{ 'default:coal_lump', 'default:sand', 'default:coal_lump' },
+		{ 'default:sand', 'default:coal_lump', 'default:sand' },
+		{ 'default:coal_lump', 'default:sand', 'default:coal_lump' },
 	}
 })
 
-minetest.register_node('tnt:tnt', {
-	description	= 'TNT',
-	tile_images	= {	'tnt_top.png', 'tnt_bottom.png',
-				'tnt_side.png', 'tnt_side.png',
-				'tnt_side.png', 'tnt_side.png'},
-	drop		= '',
-	material	= { diggability = 'not' }
+-------------------------------------------------------------- Entities --------
+
+tnt.ent_proto = {
+	hp_max		= 100,
+	physical	= true,
+	collisionbox	= { -1/2, -1/2, -1/2, 1/2, 1/2, 1/2 },
+	visual		= 'cube',
+	textures = {	'tnt_top.png', 'tnt_bottom.png', 'tnt_side.png',
+			'tnt_side.png', 'tnt_side.png', 'tnt_side.png' },
+
+	timer		= 0,
+	btimer		= 0,
+	bstatus		= true,
+	physical_state	= true,
+
+	on_activate = function( sf, sd )
+		sf.object:set_armor_groups( { immortal=1 } )
+		sf.object:setvelocity({x=0, y=4, z=0})
+		sf.object:setacceleration({x=0, y=-10, z=0})
+		sf.object:settexturemod('^[brighten')
+	end,
+
+	on_step = function( sf, dt )
+		sf.timer = sf.timer + dt
+		sf.btimer = sf.btimer + dt
+		if sf.btimer > 0.5 then
+			sf.btimer = sf.btimer - 0.5
+			if sf.bstatus then
+				sf.object:settexturemod('')
+			else
+				sf.object:settexturemod('^[brighten')
+			end
+			sf.bstatus = not sf.bstatus
+		end
+		if sf.timer > 0.5 then
+			local p = sf.object:getpos()
+			p.y = p.y - 0.501
+			local nn = minetest.env:get_node(p).name
+			if not minetest.registered_nodes[nn] or
+				minetest.registered_nodes[nn].walkable then
+				sf.object:setvelocity({x=0,y=0,z=0})
+				sf.object:setacceleration({x=0, y=0, z=0})
+			end
+		end
+		if sf.timer > 4 then
+			local pos = sf.object:getpos()
+			pos = xyz( math.floor(pos.x+0.5), math.floor(pos.y+0.5),
+				math.floor(pos.z+0.5) )
+			tnt.explode( pos, tnt.power, 'air' )
+			sf.object:remove()
+		end
+	end,
+}
+
+minetest.register_entity( 'tnt:tnt_ent', tnt.ent_proto )
+
+------------------------------------------------------------------ ABMs --------
+
+minetest.register_abm({
+	nodenames	= { 'tnt:tnt' },
+	neighbors	= { 'group:igniter' },
+	interval	= 5,
+	chance		= 1,
+	action		= tnt.lit
 })
-
-minetest.register_on_punchnode( function( pos, node )
-	if node.name ~= 'tnt:tnt' then return end
-	minetest.env:remove_node( pos )
-	minetest.env:add_entity( pos, 'tnt:tnt_ent' )
-end)
------------------------------------------------------------------ Debug --------
-
-print( ' ++ loaded : TNT, fixed by ZLovesPancakes' )
 
 --------------------------------------------------------------------------------
