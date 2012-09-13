@@ -19,10 +19,12 @@ hatch = {}
 ------------------------------------------------------------- Functions --------
 
 function hatch.open( p, n )
+	minetest.sound_play("hatch_toggle", {pos = q})
 	minetest.env:set_node( p, { name='hatch:hatch_o', param2=n.param2 } )
 end
 
 function hatch.close( p, n )
+	minetest.sound_play("hatch_toggle", {pos = q})
 	minetest.env:set_node( p, { name='hatch:hatch_c', param2=n.param2 } )
 end
 

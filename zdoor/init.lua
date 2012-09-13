@@ -22,6 +22,7 @@ function door.toggle( p, n )
 	local q = xyz( p.x, p.y+1, p.z )
 	local a = minetest.env:get_meta( p )
 	local b = minetest.env:get_meta( q )
+	minetest.sound_play("zdoor_toggle", {pos = q})
 	minetest.env:set_node( p, {name=a:get_string('alt'), param2=n.param2} )
 	minetest.env:set_node( q, {name=b:get_string('alt'), param2=n.param2} )
 end
@@ -118,7 +119,7 @@ minetest.register_node( 'zdoor:door_wood_b_t', {
 	node_box	= {	type = "fixed",
 				fixed = { -1/2, -1/2, -1/2, 1/2, 1/2, -5/16 } },
 	selection_box	= {	type = "fixed",
-				fixed = { -1/2, -1/2, -1/2, 1/2, 1/2, -5/16 } },
+				fixed = { -1/2, -1/2, -1/2, 1/2, 3/2, -5/16 } },
 	drop			= 'zdoor:door_wood',
 	sounds			= default.node_sound_wood_defaults(),
 	on_construct		= function( p )
@@ -150,7 +151,7 @@ minetest.register_node( 'zdoor:door_wood_b_f', {
 	node_box	= {	type = "fixed",
 				fixed = { -1/2, -1/2, -1/2, -5/16, 1/2, 1/2 } },
 	selection_box	= {	type = "fixed",
-				fixed = { -1/2, -1/2, -1/2, -5/16, 1/2, 1/2 } },
+				fixed = { -1/2, -1/2, -1/2, -5/16, 3/2, 1/2 } },
 	drop			= 'zdoor:door_wood',
 	sounds			= default.node_sound_wood_defaults(),
 	on_construct		= function( p )
