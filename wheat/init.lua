@@ -12,8 +12,6 @@
 
 ------------------------------------------------------------- Functions --------
 
-local function xyz( i,j,k ) return {x=i,y=j,z=k} end
-
 local function unwheat( p, n, u )
 	p.y = p.y + 1
 	local nn = minetest.env:get_node( p ).name
