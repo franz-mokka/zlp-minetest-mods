@@ -2,8 +2,8 @@
 --	Custom Commands
 --------------------------------------------------------------------------------
 --	Many custom commands, currently includes:
---		/killme		Suicide
---		/playerlist	List players
+--		/kill		Suicide
+--		/list		List players
 --
 --	(c)2012 Fernando Zapata
 --	Code licensed under GNU GPLv2
@@ -13,7 +13,7 @@
 --------------------------------------------------------------------------------
 
 ---- Suicide command ----
-minetest.register_chatcommand( 'killme', {
+minetest.register_chatcommand( 'kill', {
 	description = 'kill yourself',
 	func = function( name, param )
 		local player = minetest.env:get_player_by_name(name)
@@ -22,7 +22,7 @@ minetest.register_chatcommand( 'killme', {
 })
 
 ---- List connected players ----
-minetest.register_chatcommand( 'playerlist', {
+minetest.register_chatcommand( 'list', {
 	descrpition = 'list connected players',
 	func = function( name, param )
 		local players = minetest.get_connected_players()
@@ -33,7 +33,5 @@ minetest.register_chatcommand( 'playerlist', {
 		minetest.chat_send_player( name, list )
 	end
 })
-
-print( ' ++ loaded : Custom Commands, by ZLovesPancakes' )
 
 --------------------------------------------------------------------------------
