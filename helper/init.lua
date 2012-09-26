@@ -8,10 +8,6 @@
 --		http://creativecommons.org/licenses/by-sa/3.0/
 --------------------------------------------------------------------------------
 
---------------------------------------------------------------- Globals --------
-
---helper = {}
-
 ------------------------------------------------------------- Functions --------
 
 function xyz( i,j,k ) return {x=i,y=j,z=k} end
@@ -27,10 +23,10 @@ function inTable( v, t )
 	return false
 end
 
-function switch( c )
-	local swtbl = {
+function case( c )
+	return {
 		casevar = c,
-		caseof = function (self, code)
+		of = function (self, code)
 			local f
 			if (self.casevar) then
 				f = code[self.casevar] or code.default
@@ -48,10 +44,9 @@ function switch( c )
 			end
 		end
 	}
-	return swtbl
 end
 
-function isDir( d )
+function isDir(d)
 	local f = io.open(d..'/.')
 	if f then
 		io.close(f)
@@ -59,6 +54,10 @@ function isDir( d )
 	else
 		return false
 	end
+end
+
+function nodeBox(x, y, z, i, j, k)
+	return {type = 'fixed', fixed = {x, y, z, i, j, k}}
 end
 
 --------------------------------------------------------------------------------
